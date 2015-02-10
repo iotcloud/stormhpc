@@ -1,0 +1,12 @@
+stormforhpc
+--------
+
+stormforhpc enables the use of Apache Storm in a non-dedicated cluster environment,
+being administered by typical batch scheduler. We are currently supporting
+the PBS (Moab) scheduler, although a port to a scheduler such as Condor would be very trivial.
+
+The pbs-example.sh provide an example of how to use stormforhpc with PBS.
+
+Pre-requisites
+--------------
+stormforhpc needs Apache Storm 0.9.2, Apache ZooKeeper 3.4.6 and a batch scheduler such as PBS.
