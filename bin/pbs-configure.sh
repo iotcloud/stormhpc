@@ -38,6 +38,8 @@ do
     esac
 done
 
+echo $NODES
+
 if [ "$NODES" != "" ]; then
     echo "Number of Storm nodes requested: $NODES"
 else 
