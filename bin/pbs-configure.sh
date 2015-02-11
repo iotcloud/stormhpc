@@ -40,7 +40,7 @@ done
 
 echo $NODES
 echo $PBS_NODEFILE
-
+cat  $PBS_NODEFILE
 if [ "$NODES" != "" ]; then
     echo "Number of Storm nodes requested: $NODES"
 else 
