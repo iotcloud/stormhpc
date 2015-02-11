@@ -42,7 +42,7 @@ do
     esac
 done
 
-#echo $NODES
+echo $ZOOCFGDIR
 #echo $PBS_NODEFILE
 #cat  $PBS_NODEFILE
 if [ "$NODES" != "" ]; then
