@@ -2,7 +2,7 @@
 
 #PBS -q batch
 #PBS -N storm_job
-#PBS -l nodes=4:ppn=1
+#PBS -l nodes=2:ppn=4
 #PBS -o storm_run.out
 #PBS -e storm_run.err
 #PBS -A baru-tro
@@ -25,7 +25,7 @@ export STORM_CONF_DIR="/N/u/skamburu/software/stormhpc/conf"
 # usage: $STORM_HPC_HOME/bin/pbs-configure.sh -h
 echo "Set up the configurations for stormhpc"
 # this is the non-persistent mode
-$STORMHPC_HOME/bin/pbs-configure.sh -n 4 -c $STORM_CONF_DIR
+$STORMHPC_HOME/bin/pbs-configure.sh -n 2 -c $STORM_CONF_DIR
 echo
 
 #### Submit your jobs here
