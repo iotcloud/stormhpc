@@ -38,9 +38,9 @@ do
     esac
 done
 
-echo $NODES
-echo $PBS_NODEFILE
-cat  $PBS_NODEFILE
+#echo $NODES
+#echo $PBS_NODEFILE
+#cat  $PBS_NODEFILE
 if [ "$NODES" != "" ]; then
     echo "Number of Storm nodes requested: $NODES"
 else 
@@ -61,10 +61,6 @@ fi
 if [ -e $PBS_NODEFILE ]; then
     PBS_NODES=`awk 'END { print NR }' $PBS_NODEFILE`
     echo "Received $PBS_NODES nodes from PBS"
-    NO_OF_CORES=`cat $PBS_NODEFILE | egrep -v '^#'\|'^$' | wc -l | awk '{print $1}'`
-    NODE_LIST=`cat $PBS_NODEFILE `
-    echo $NO_OF_CORES
-    echo $NODE_LIST
     if [ "$NODES" != "$PBS_NODES" ]; then
 	echo "Number of nodes received from PBS not the same as number of nodes requested by user"
 	exit 1

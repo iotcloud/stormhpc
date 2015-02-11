@@ -2,7 +2,8 @@
 
 #PBS -q batch
 #PBS -N storm_job
-#PBS -l nodes=2:ppn=4
+###PBS -l nodes=2:ppn=4
+#PBS -l select=2:ncpus=8
 #PBS -o storm_run.out
 #PBS -e storm_run.err
 #PBS -A baru-tro
