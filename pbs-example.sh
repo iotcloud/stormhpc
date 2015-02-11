@@ -8,7 +8,7 @@
 #PBS -A baru-tro
 #PBS -V
 
-### Run the myHadoop environment script to set the appropriate variables
+### Run the stormhpc environment script to set the appropriate variables
 #
 # Note: ensure that the variables are set correctly in bin/setenv.sh
 . /N/u/skamburu/software/stormhpc/bin/setenv.sh
