@@ -19,7 +19,8 @@
 # required by Storm - all config files will be picked up from here
 #
 # Make sure that this is accessible to all nodes
-export STORM_CONF_DIR="/N/u/skamburu/software/stormhpc/conf"
+export STORM_CONF_DIR="/N/u/skamburu/software/stormhpc/storm/conf"
+export ZOOCFGDIR="/N/u/skamburu/software/stormhpc/zkconf/"
 
 #### Set up the configuration
 # Make sure number of nodes is the same as what you have requested from PBS

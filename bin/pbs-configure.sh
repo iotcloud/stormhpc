@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function print_usage {
-    echo "Usage: -n NODES -p -d BASE_DIR -c CONFIG_DIR -h"
+    echo "Usage: -n NODES -p -d BASE_DIR -c CONFIG_DIR -z) ZOOCFGDIR -h"
     echo "       -n: Number of nodes requested for the Storm installation"
     echo "       -c: The directory to generate storm configs in"
     echo "       -h: Print help"
@@ -32,6 +32,10 @@ do
 	    CONFIG_DIR=$1
             shift;;
 
+        -z) shift;
+	    ZOOCFGDIR=$1
+            shift;;
+
         -h) shift;
 	    print_usage
 	    exit 0
@@ -49,10 +53,18 @@ else
     exit 1
 fi
 
+if [ "ZOOCFGDIR" != "" ]; then
+    echo "Generation ZK configuration in directory: $ZOOCFGDIR"
+else 
+    echo "Location of ZK configuration directory not specified"
+    print_usage
+    exit 1
+fi
+
 if [ "$CONFIG_DIR" != "" ]; then
     echo "Generation Storm configuration in directory: $CONFIG_DIR"
-else 
-    echo "Location of configuration directory not specified"
+else
+    echo "Location of Storm configuration directory not specified"
     print_usage
     exit 1
 fi
@@ -72,21 +84,22 @@ fi
 
 # create the config, data, and log directories
 rm -rf $CONFIG_DIR
-mkdir -p $CONFIG_DIR/storm
-mkdir -p $CONFIG_DIR/zk
+mkdir -p $CONFIG_DIR
+mkdir -p $ZOOCFGDIR
 
 # first copy over all default Hadoop configs
 cp $STORM_HOME/conf/* $CONFIG_DIR/
+cp $ZK_HOME/conf/* $ZOOCFGDIR/
 
 # pick the master node as the first node in the PBS_NODEFILE
 MASTER_NODE=`awk 'NR==1{print;exit}' $PBS_NODEFILE`
 echo "Master is: $MASTER_NODE"
 
 # update the hdfs and mapred configs
-sed 's:NIMBUS_HOST'"$MASTER_NODE"':/g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
+sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
 sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm.yaml
 sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
-sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':/g' $STORMHPC_HOME/etc/zoo.cfg > $ZK_HOME/conf/zoo.cfg
+sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':g' $STORMHPC_HOME/etc/zoo.cfg > $ZOOCFGDIR/zoo.cfg
 
 # create or link HADOOP_{DATA,LOG}_DIR on all slaves
 for ((i=1; i<=$NODES; i++))
