@@ -26,8 +26,6 @@ export STORM_CONF_DIR="/N/u/skamburu/software/stormhpc/conf"
 echo "Set up the configurations for stormhpc"
 # this is the non-persistent mode
 $STORMHPC_HOME/bin/pbs-configure.sh -n 4 -c $STORM_CONF_DIR
-# this is the persistent mode
-# $MY_HADOOP_HOME/bin/pbs-configure.sh -n 4 -c $HADOOP_CONF_DIR -p -d /oasis/cloudstor-group/HDFS
 echo
 
 #### Submit your jobs here
