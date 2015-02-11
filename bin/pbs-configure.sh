@@ -3,12 +3,7 @@
 function print_usage {
     echo "Usage: -n NODES -p -d BASE_DIR -c CONFIG_DIR -h"
     echo "       -n: Number of nodes requested for the Storm installation"
-    echo "       -p: Whether the Storm installation should be persistent"
-    echo "           If so, data directories will have to be linked to a"
-    echo "           directory that is not local to enable persistence"
-    echo "       -d: Base directory to persist HDFS state, to be used if"
-    echo "           -p is set"
-    echo "       -c: The directory to generate Hadoop configs in"
+    echo "       -c: The directory to generate storm configs in"
     echo "       -h: Print help"
 }
 
@@ -19,7 +14,7 @@ BASE_DIR=""
 CONFIG_DIR=""
 
 # parse arguments
-args=`getopt n:pd:c:h $*`
+args=`getopt n:d:c:h $*`
 if test $? != 0
 then
     print_usage
@@ -33,17 +28,9 @@ do
 	    NODES=$1
             shift;;
 
-        -d) shift;
-	    BASE_DIR=$1
-            shift;;
-
         -c) shift;
 	    CONFIG_DIR=$1
             shift;;
-
-        -p) shift;
-	    PERSIST="true"
-	    ;;
 
         -h) shift;
 	    print_usage
@@ -52,7 +39,7 @@ do
 done
 
 if [ "$NODES" != "" ]; then
-    echo "Number of Hadoop nodes requested: $NODES"
+    echo "Number of Storm nodes requested: $NODES"
 else 
     echo "Required parameter not set - number of nodes (-n)"
     print_usage
@@ -60,24 +47,11 @@ else
 fi
 
 if [ "$CONFIG_DIR" != "" ]; then
-    echo "Generation Hadoop configuration in directory: $CONFIG_DIR"
+    echo "Generation Storm configuration in directory: $CONFIG_DIR"
 else 
     echo "Location of configuration directory not specified"
     print_usage
     exit 1
-fi
-
-if [ "$PERSIST" = "true" ]; then
-    echo "Persisting HDFS state (-p)"
-    if [ "$BASE_DIR" = "" ]; then
-	echo "Base directory (-d) not set for persisting HDFS state"
-	print_usage
-	exit 1
-    else
-	echo "Using directory $BASE_DIR for persisting HDFS state"
-    fi
-else
-    echo "Not persisting HDFS state"
 fi
 
 # get the number of nodes from PBS
@@ -96,24 +70,22 @@ fi
 
 # create the config, data, and log directories
 rm -rf $CONFIG_DIR
-mkdir -p $CONFIG_DIR
+mkdir -p $CONFIG_DIR/storm
+mkdir -p $CONFIG_DIR/zk
 
 # first copy over all default Hadoop configs
-cp $HADOOP_HOME/conf/* $CONFIG_DIR
+cp $STORM_HOME/conf/* $CONFIG_DIR/storm
+cp $ZK_HOME/conf/* $CONFIG_DIR/zk
 
 # pick the master node as the first node in the PBS_NODEFILE
 MASTER_NODE=`awk 'NR==1{print;exit}' $PBS_NODEFILE`
 echo "Master is: $MASTER_NODE"
-echo $MASTER_NODE > $CONFIG_DIR/masters
-
-# every node in the PBS_NODEFILE is a slave
-cat $PBS_NODEFILE > $CONFIG_DIR/slaves
 
 # update the hdfs and mapred configs
-sed 's:NIMBUS_HOST'"$MASTER_NODE"':/g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
-sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm.yaml
-sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
-sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':/g' $STORMHPC_HOME/etc/zoo.cfg > $CONFIG_DIR/zoo.cfg
+sed 's:NIMBUS_HOST'"$MASTER_NODE"':/g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm/storm.yaml
+sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm/storm.yaml
+sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm/storm.yaml
+sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':/g' $STORMHPC_HOME/etc/zoo.cfg > $CONFIG_DIR/zk/zoo.cfg
 
 # update the HADOOP log directory
 echo "" >> $CONFIG_DIR/hadoop-env.sh
