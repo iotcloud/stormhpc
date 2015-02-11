@@ -31,7 +31,7 @@ do
 done
 
 if [ "$NODES" != "" ]; then
-    echo "Number of Hadoop nodes specified by user: $NODES"
+    echo "Number of Storm nodes specified by user: $NODES"
 else 
     echo "Required parameter not set - number of nodes (-n)"
     print_usage
