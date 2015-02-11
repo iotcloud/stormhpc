@@ -74,23 +74,17 @@ mkdir -p $CONFIG_DIR/storm
 mkdir -p $CONFIG_DIR/zk
 
 # first copy over all default Hadoop configs
-cp $STORM_HOME/conf/* $CONFIG_DIR/storm
-cp $ZK_HOME/conf/* $CONFIG_DIR/zk
+cp $STORM_HOME/conf/* $CONFIG_DIR/
 
 # pick the master node as the first node in the PBS_NODEFILE
 MASTER_NODE=`awk 'NR==1{print;exit}' $PBS_NODEFILE`
 echo "Master is: $MASTER_NODE"
 
 # update the hdfs and mapred configs
-sed 's:NIMBUS_HOST'"$MASTER_NODE"':/g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm/storm.yaml
-sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm/storm.yaml
-sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm/storm.yaml
-sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':/g' $STORMHPC_HOME/etc/zoo.cfg > $CONFIG_DIR/zk/zoo.cfg
-
-# update the HADOOP log directory
-echo "" >> $CONFIG_DIR/hadoop-env.sh
-echo "# Overwrite location of the log directory" >> $CONFIG_DIR/hadoop-env.sh
-echo "export HADOOP_LOG_DIR=$HADOOP_LOG_DIR" >> $CONFIG_DIR/hadoop-env.sh
+sed 's:NIMBUS_HOST'"$MASTER_NODE"':/g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
+sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm.yaml
+sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
+sed 's:ZK_DATA_DIR'"$ZK_DATA_DIR"':/g' $STORMHPC_HOME/etc/zoo.cfg > $ZK_HOME/conf/zoo.cfg
 
 # create or link HADOOP_{DATA,LOG}_DIR on all slaves
 for ((i=1; i<=$NODES; i++))
@@ -108,4 +102,18 @@ do
 	cmd="rm -rf $ZK_DATA_DIR; mkdir -p $ZK_DATA_DIR"
 	echo $cmd
 	ssh $node $cmd
+
+    if [ $i -eq 1 ]; then
+        cmd="nohup $STORM_HOME/bin/storm nimbus &"
+	    echo $cmd
+	    ssh $node $cmd
+
+	    cmd="$ZK_HOME/bin/zkServer.sh start"
+	    echo $cmd
+	    ssh $node $cmd
+	else
+	    cmd="nohup $STORM_HOME/bin/storm supervisor &"
+	    echo $cmd
+	    ssh $node $cmd
+    fi
 done

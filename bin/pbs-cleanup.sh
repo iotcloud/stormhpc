@@ -2,7 +2,7 @@
 
 function print_usage {
     echo "Usage: -n NODES -h"
-    echo "       -n: Number of nodes requested for the Hadoop installation"
+    echo "       -n: Number of nodes requested for the Storm installation"
     echo "       -h: Print help"
 }
 
@@ -57,7 +57,7 @@ for ((i=1; i<=$NODES; i++))
 do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Clean up node: $node"
-    cmd="rm -rf $HADOOP_DATA_DIR $HADOOP_LOG_DIR"
+    cmd="rm -rf $STORM_DATA_DIR $STORM_LOG_DIR $ZK_DATA_DIR"
     echo $cmd
     ssh $node $cmd 
 done
