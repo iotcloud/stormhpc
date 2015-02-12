@@ -119,15 +119,15 @@ do
 	ssh $node $cmd
 
     if [ $i -eq 1 ]; then
-	    cmd="$ZK_HOME/bin/zkServer.sh start"
+	    cmd="export ZOOCFGDIR=$ZOOCFGDIR; $ZK_HOME/bin/zkServer.sh start"
 	    echo $cmd
 	    ssh $node $cmd
 
-	    cmd="nohup $STORM_HOME/bin/storm nimbus &"
+	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus &"
 	    echo $cmd
 	    ssh $node $cmd
 	else
-	    cmd="nohup $STORM_HOME/bin/storm supervisor &"
+	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup $STORM_HOME/bin/storm supervisor &"
 	    echo $cmd
 	    ssh $node $cmd
     fi
