@@ -30,9 +30,16 @@ echo "Set up the configurations for stormhpc"
 $STORMHPC_HOME/bin/pbs-configure.sh -n 2 -c $STORM_CONF_DIR
 echo
 
+sleep 30
+
 #### Submit your jobs here
+
+while true;
+do
+    sleep 10
+done
 
 #### Clean up the working directories after job completion
 echo "Clean up"
-$STORMHPC_HOME/bin/pbs-cleanup.sh -n 4
+$STORMHPC_HOME/bin/pbs-cleanup.sh -n 2
 echo
