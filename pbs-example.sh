@@ -31,9 +31,6 @@ $STORMHPC_HOME/bin/pbs-configure.sh -n 2 -c $STORM_CONF_DIR
 echo
 
 #### Submit your jobs here
-echo "Run some test storm jobs"
-$STORM_HOME/bin/storm --config $STORM_CONF_DIR
-echo
 
 #### Clean up the working directories after job completion
 echo "Clean up"
