@@ -119,11 +119,11 @@ do
 	ssh $node $cmd
 
     if [ $i -eq 1 ]; then
-        cmd="nohup $STORM_HOME/bin/storm nimbus &"
+	    cmd="$ZK_HOME/bin/zkServer.sh start"
 	    echo $cmd
 	    ssh $node $cmd
 
-	    cmd="$ZK_HOME/bin/zkServer.sh start"
+	    cmd="nohup $STORM_HOME/bin/storm nimbus &"
 	    echo $cmd
 	    ssh $node $cmd
 	else
