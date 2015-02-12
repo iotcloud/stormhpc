@@ -33,6 +33,7 @@ echo
 sleep 30
 
 #### Submit your jobs here
+$STORM_HOME/bin/storm jar $STORM_HOME/examples/storm-starter/storm-starter-topologies-0.9.2-incubating.jar storm.starter.WordCountTopology
 
 while true;
 do
