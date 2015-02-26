@@ -16,7 +16,7 @@
 
 ########### These MUST be filled in for a storm configuration
 storm.zookeeper.servers:
-     - "ZK_HOST:2182"
+     - "149.165.159.11"
 #     - "server2"
 #
 nimbus.host: "NIMBUS_HOST"
