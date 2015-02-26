@@ -98,7 +98,7 @@ echo "Master is: $MASTER_NODE"
 # update the hdfs and mapred configs
 sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
 sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm.yaml
-sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
+#sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
 sed 's:ZK_DATA_DIR:'"$ZK_DATA_DIR"':g' $STORMHPC_HOME/etc/zoo.cfg > $ZOOCFGDIR/zoo.cfg
 
 # create or link HADOOP_{DATA,LOG}_DIR on all slaves
