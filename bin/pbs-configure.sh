@@ -123,11 +123,11 @@ do
 #	    echo $cmd
 #	    ssh $node $cmd
 
-	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus &"
+	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus -Dstorm.log.dir=/tmp/storm/$HOSTNAME &"
 	    echo $cmd
 	    ssh $node $cmd
 	else
-	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup $STORM_HOME/bin/storm supervisor &"
+	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup $STORM_HOME/bin/storm supervisor -Dstorm.log.dir=/tmp/storm/$HOSTNAME &"
 	    echo $cmd
 	    ssh $node $cmd
     fi
