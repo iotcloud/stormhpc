@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set this to location of stormhpc
-export STORMHPC_HOME="/N/u/skamburu/software/stormhpc"
+export STORMHPC_HOME="/N/u/skamburu/projects/stormhpc"
 
 # Set this to the location of the Storm installation
 export STORM_HOME="/N/u/skamburu/software/apache-storm-0.9.2"

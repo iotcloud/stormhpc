@@ -12,15 +12,15 @@
 ### Run the stormhpc environment script to set the appropriate variables
 #
 # Note: ensure that the variables are set correctly in bin/setenv.sh
-. /N/u/skamburu/software/stormhpc/bin/setenv.sh
+. /N/u/skamburu/projects/stormhpc/bin/setenv.sh
 
 #### Set this to the directory where Storm configs should be generated
 # Don't change the name of this variable (STORM_CONF_DIR) as it is
 # required by Storm - all config files will be picked up from here
 #
 # Make sure that this is accessible to all nodes
-export STORM_CONF_DIR="/N/u/skamburu/software/stormhpc/storm/conf"
-export ZOOCFGDIR="/N/u/skamburu/software/stormhpc/zkconf"
+export STORM_CONF_DIR="/N/u/skamburu/projects/stormhpc/storm/conf"
+export ZOOCFGDIR="/N/u/skamburu/projects/stormhpc/zkconf"
 
 #### Set up the configuration
 # Make sure number of nodes is the same as what you have requested from PBS
