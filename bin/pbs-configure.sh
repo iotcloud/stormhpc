@@ -114,14 +114,14 @@ do
 	echo $cmd
 	ssh $node $cmd
 
-	cmd="rm -rf $ZK_DATA_DIR; mkdir -p $ZK_DATA_DIR"
-	echo $cmd
-	ssh $node $cmd
+#	cmd="rm -rf $ZK_DATA_DIR; mkdir -p $ZK_DATA_DIR"
+#	echo $cmd
+#	ssh $node $cmd
 
     if [ $i -eq 1 ]; then
-	    cmd="export ZOOCFGDIR=$ZOOCFGDIR; $ZK_HOME/bin/zkServer.sh start"
-	    echo $cmd
-	    ssh $node $cmd
+#	    cmd="export ZOOCFGDIR=$ZOOCFGDIR; $ZK_HOME/bin/zkServer.sh start"
+#	    echo $cmd
+#	    ssh $node $cmd
 
 	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus &"
 	    echo $cmd

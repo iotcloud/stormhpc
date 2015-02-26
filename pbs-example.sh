@@ -33,7 +33,8 @@ echo
 sleep 30
 
 #### Submit your jobs here
-$STORM_HOME/bin/storm jar $STORM_HOME/examples/storm-starter/storm-starter-topologies-0.9.2-incubating.jar storm.starter.WordCountTopology
+$STORM_HOME/bin/storm jar ~/projects/iotrobots/slam/streaming/target/iotrobots-slam-streaming-1.0-SNAPSHOT-jar-with-dependencies.jar cgl.iotrobots.slam.streaming.SLAMTopology -name slam_processor -ds_mode 0 -p 10 -pt 20
+
 
 while true;
 do
