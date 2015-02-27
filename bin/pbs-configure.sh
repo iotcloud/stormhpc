@@ -14,7 +14,7 @@ BASE_DIR=""
 CONFIG_DIR=""
 
 # parse arguments
-args=`getopt n:d:c:h $*`
+args=`getopt n:d:c:z:h $*`
 if test $? != 0
 then
     print_usage

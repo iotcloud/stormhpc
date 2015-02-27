@@ -27,7 +27,7 @@ export ZOOCFGDIR="/N/u/skamburu/projects/stormhpc/zkconf"
 # usage: $STORM_HPC_HOME/bin/pbs-configure.sh -h
 echo "Set up the configurations for stormhpc"
 # this is the non-persistent mode
-$STORMHPC_HOME/bin/pbs-configure.sh -n 2 -c $STORM_CONF_DIR
+$STORMHPC_HOME/bin/pbs-configure.sh -n 2 -c $STORM_CONF_DIR -z $ZOOCFGDIR
 echo
 
 sleep 30
