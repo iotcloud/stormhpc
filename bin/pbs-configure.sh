@@ -125,10 +125,10 @@ do
 
 	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus -Dstorm.log.dir=/tmp/storm/$HOSTNAME/logs &"
 	    echo "ssh " $node $cmd
-	    ssh $node $cmd
+	    ssh "$node $cmd"
 	else
 	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup $STORM_HOME/bin/storm supervisor -Dstorm.log.dir=/tmp/storm/$HOSTNAME/logs &"
 	    echo "ssh " $node $cmd
-	    ssh $node $cmd
+	    ssh "$node $cmd"
     fi
 done
