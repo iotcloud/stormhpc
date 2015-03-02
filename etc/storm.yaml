@@ -16,8 +16,8 @@
 
 ########### These MUST be filled in for a storm configuration
 storm.zookeeper.servers:
-      - "localhost"
-#     - "149.165.159.11"
+#      - "localhost"
+     - "149.165.159.11"
 #     - "server2"
 #
 nimbus.host: "NIMBUS_HOST"
