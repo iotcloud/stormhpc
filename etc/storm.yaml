@@ -29,9 +29,14 @@ supervisor.slots.ports:
     - 6703
 
 storm.local.dir: "STORM_LOCAL_DIR"
+storm.log.dir: "STORM_LOG_DIR"
 
 worker.childopts: "-Xms1536m -Xmx1536m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:NewSize=500m -XX:MaxNewSize=500m -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=6"
 supervisor.childopts: "-Xmx512m"
 nimbus.childopts: "-Xmx1024m"
 
-storm.log.dir: "STORM_LOG_DIR"
+
+
+
+
+
