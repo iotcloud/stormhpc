@@ -110,7 +110,7 @@ do
     # update the storm configs
     sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $STORM_CFG_DIR_NODE/storm.yaml
     sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $STORM_CFG_DIR_NODE/storm.yaml
-    sed -i 's:STORM_LOG_DIR:'"$STORM_LOG_DIR"':g' $STORM_CFG_DIR_NODEi/storm.yaml
+    sed -i 's:STORM_LOG_DIR:'"$STORM_LOG_DIR"':g' $STORM_CFG_DIR_NODE/storm.yaml
 
     cmd="rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR"
     echo $cmd
