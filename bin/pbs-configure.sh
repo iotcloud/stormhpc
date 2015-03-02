@@ -99,7 +99,7 @@ do
 
     cmd="rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i"
     echo $cmd
-    ssh $node $cmd
+    rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i
 
     STORM_CFG_DIR_NODE=$STORMCFGDIR
 
