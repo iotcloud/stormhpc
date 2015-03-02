@@ -92,20 +92,20 @@ do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Configuring node: $node"
 
+    STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
+
     STORM_LOCAL_DIR="//N/u/skamburu/storm/local-dir/$i"
     echo $STORM_LOCAL_DIR
     STORM_LOG_DIR="/N/u/skamburu/storm/logs/$i"
     echo $STORM_LOG_DIR
 
-    cmd="rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i"
+    cmd="rm -rf $STORM_CFG_DIR_NODE; mkdir -p $STORM_CFG_DIR_NODE"
     echo $cmd
-    rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i
-
-    STORM_CFG_DIR_NODE=$STORMCFGDIR
+    rm -rf $STORM_CFG_DIR_NODE; mkdir -p $STORM_CFG_DIR_NODE
 
     # first copy over all default storm configs
-    echo "cp $STORM_HOME/conf/* $STORMCFGDIR/$i"
-    cp $STORM_HOME/conf/* $STORM_CFG_DIR_NODE
+    echo "cp $STORM_HOME/conf/* $STORM_CFG_DIR_NODE"
+    cp $STORM_HOME/conf/* $STORM_CFG_DIR_NODE/
 
     # update the storm configs
     sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $STORM_CFG_DIR_NODE/storm.yaml
