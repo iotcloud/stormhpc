@@ -16,7 +16,8 @@
 
 ########### These MUST be filled in for a storm configuration
 storm.zookeeper.servers:
-     - "149.165.159.11"
+      - "localhost"
+#     - "149.165.159.11"
 #     - "server2"
 #
 nimbus.host: "NIMBUS_HOST"
@@ -27,8 +28,10 @@ supervisor.slots.ports:
     - 6702
     - 6703
 
-storm.local.dir: STORM_LOCAL_DIR
+storm.local.dir: "STORM_LOCAL_DIR"
 
 worker.childopts: "-Xms1536m -Xmx1536m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:NewSize=500m -XX:MaxNewSize=500m -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=6"
 supervisor.childopts: "-Xmx512m"
 nimbus.childopts: "-Xmx1024m"
+
+storm.log.dir: "STORM_LOG_DIR"

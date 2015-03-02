@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function print_usage {
-    echo "Usage: -n NODES -p -d BASE_DIR -c CONFIG_DIR -z) ZOOCFGDIR -h"
+    echo "Usage: -n NODES -p -d BASE_DIR -c STORMCFGDIR -h"
     echo "       -n: Number of nodes requested for the Storm installation"
     echo "       -c: The directory to generate storm configs in"
     echo "       -h: Print help"
@@ -9,12 +9,11 @@ function print_usage {
 
 # initialize arguments
 NODES=""
-PERSIST="false"
 BASE_DIR=""
-CONFIG_DIR=""
+STORMCFGDIR=""
 
 # parse arguments
-args=`getopt n:d:c:z:h $*`
+args=`getopt n:d:c:h $*`
 if test $? != 0
 then
     print_usage
@@ -29,7 +28,7 @@ do
             shift;;
 
         -c) shift;
-	    CONFIG_DIR=$1
+	    STORMCFGDIR=$1
             shift;;
 
         -z) shift;
@@ -42,9 +41,13 @@ do
     esac
 done
 
+
+#STORMCFGDIR="/home/supun/dev/projects/stormforhpc/storm/conf"
+
 echo $ZOOCFGDIR
-#echo $PBS_NODEFILE
-#cat  $PBS_NODEFILE
+echo $PBS_NODEFILE
+echo $STORMCFGDIR
+
 if [ "$NODES" != "" ]; then
     echo "Number of Storm nodes requested: $NODES"
 else 
@@ -53,16 +56,9 @@ else
     exit 1
 fi
 
-if [ "ZOOCFGDIR" != "" ]; then
-    echo "Generation ZK configuration in directory: $ZOOCFGDIR"
-else 
-    echo "Location of ZK configuration directory not specified"
-    print_usage
-    exit 1
-fi
 
-if [ "$CONFIG_DIR" != "" ]; then
-    echo "Generation Storm configuration in directory: $CONFIG_DIR"
+if [ "$STORMCFGDIR" != "" ]; then
+    echo "Generation Storm configuration in directory: $STORMCFGDIR"
 else
     echo "Location of Storm configuration directory not specified"
     print_usage
@@ -83,52 +79,50 @@ else
 fi
 
 # create the config, data, and log directories
-rm -rf $CONFIG_DIR
-mkdir -p $CONFIG_DIR
+rm -rf $STORMCFGDIR
+mkdir -p $STORMCFGDIR
 mkdir -p $ZOOCFGDIR
-
-# first copy over all default Hadoop configs
-cp $STORM_HOME/conf/* $CONFIG_DIR/
-cp $ZK_HOME/conf/* $ZOOCFGDIR/
 
 # pick the master node as the first node in the PBS_NODEFILE
 MASTER_NODE=`awk 'NR==1{print;exit}' $PBS_NODEFILE`
 echo "Master is: $MASTER_NODE"
 
-# update the hdfs and mapred configs
-sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $CONFIG_DIR/storm.yaml
-sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $CONFIG_DIR/storm.yaml
-#sed -i 's:ZK_HOST:'"$MASTER_NODE"':g' $CONFIG_DIR/storm.yaml
-sed 's:ZK_DATA_DIR:'"$ZK_DATA_DIR"':g' $STORMHPC_HOME/etc/zoo.cfg > $ZOOCFGDIR/zoo.cfg
-
-# create or link HADOOP_{DATA,LOG}_DIR on all slaves
 for ((i=1; i<=$NODES; i++))
 do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Configuring node: $node"
+
+    STORM_LOCAL_DIR="/tmp/storm/local-dir/$i"
+    echo $STORM_LOCAL_DIR
+    STORM_LOG_DIR="/tmp/storm/logs/$i"
+    echo $STORM_LOG_DIR
+
+    cmd="rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i"
+    echo $cmd
+    ssh $node $cmd
+
+    STORM_CFG_DIR_NODE=$STORMCFGDIR
+
+    # first copy over all default storm configs
+    echo "cp $STORM_HOME/conf/* $STORMCFGDIR/$i"
+    cp $STORM_HOME/conf/* $STORM_CFG_DIR_NODE
+
+    # update the storm configs
+    sed 's:NIMBUS_HOST:'"$MASTER_NODE"':g' $STORMHPC_HOME/etc/storm.yaml > $STORM_CFG_DIR_NODE/storm.yaml
+    sed -i 's:STORM_LOCAL_DIR:'"$STORM_LOCAL_DIR"':g' $STORM_CFG_DIR_NODE/storm.yaml
+    sed -i 's:STORM_LOG_DIR:'"$STORM_LOG_DIR"':g' $STORM_CFG_DIR_NODEi/storm.yaml
+
     cmd="rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR"
     echo $cmd
-    ssh $node $cmd 
+    ssh $node $cmd
 
-	cmd="rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR"
-	echo $cmd
-	ssh $node $cmd
-
-#	cmd="rm -rf $ZK_DATA_DIR; mkdir -p $ZK_DATA_DIR"
-#	echo $cmd
-#	ssh $node $cmd
-
+    cmd="rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR"
+    echo $cmd
+    ssh $node $cmd
     if [ $i -eq 1 ]; then
-#	    cmd="export ZOOCFGDIR=$ZOOCFGDIR; $ZK_HOME/bin/zkServer.sh start"
-#	    echo $cmd
-#	    ssh $node $cmd
-
-	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup  $STORM_HOME/bin/storm nimbus -Dstorm.log.dir=/tmp/storm/$HOSTNAME/logs &"
-	    echo "ssh " $node $cmd
-	    ssh "$node $cmd"
+	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
+	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
 	else
-	    cmd="export STORM_CONF_DIR=$CONFIG_DIR; nohup $STORM_HOME/bin/storm supervisor -Dstorm.log.dir=/tmp/storm/$HOSTNAME/logs &"
-	    echo "ssh " $node $cmd
-	    ssh "$node $cmd"
+	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
     fi
 done
