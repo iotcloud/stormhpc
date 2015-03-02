@@ -5,7 +5,7 @@ export STORMHPC_HOME="/N/u/skamburu/projects/stormhpc"
 #export STORMHPC_HOME="/home/supun/dev/projects/stormforhpc"
 
 # Set this to the location of the Storm installation
-export STORM_HOME="/N/u/skamburu/software/apache-storm-0.9.2"
+export STORM_HOME="/N/u/skamburu/software/apache-storm-0.9.3"
 #export STORM_HOME="/home/supun/dev/projects/dist/apache-storm-0.9.3"
 
 # set this to the location where your zk is located
