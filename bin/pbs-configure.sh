@@ -114,11 +114,12 @@ do
 
     cmd="rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR"
     echo $cmd
-    ssh $node $cmd
+    rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR
 
     cmd="rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR"
     echo $cmd
     ssh $node $cmd
+    rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR
     if [ $i -eq 1 ]; then
 	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
 	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
