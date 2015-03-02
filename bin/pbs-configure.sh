@@ -92,9 +92,9 @@ do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Configuring node: $node"
 
-    STORM_LOCAL_DIR="/tmp/storm/local-dir/$i"
+    STORM_LOCAL_DIR="//N/u/skamburu/storm/local-dir/$i"
     echo $STORM_LOCAL_DIR
-    STORM_LOG_DIR="/tmp/storm/logs/$i"
+    STORM_LOG_DIR="/N/u/skamburu/storm/logs/$i"
     echo $STORM_LOG_DIR
 
     cmd="rm -rf $STORMCFGDIR/$i; mkdir -p $STORMCFGDIR/$i"
