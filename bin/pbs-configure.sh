@@ -94,7 +94,7 @@ do
 
     STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
 
-    STORM_LOCAL_DIR="//N/u/skamburu/storm/local-dir/$i"
+    STORM_LOCAL_DIR="/N/u/skamburu/storm/local-dir/$i"
     echo $STORM_LOCAL_DIR
     STORM_LOG_DIR="/N/u/skamburu/storm/logs/$i"
     echo $STORM_LOG_DIR
