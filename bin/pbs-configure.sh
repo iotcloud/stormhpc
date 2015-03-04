@@ -93,7 +93,7 @@ do
     echo "Configuring node: $node"
 
     echo "SSH in to node"
-    ssh $node "sh -c 'ls'"
+    ssh $node 'ls; pwd'
 
     STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
 
