@@ -93,7 +93,7 @@ do
     echo "Configuring node: $node"
 
     echo "SSH in to node"
-    ssh $node 'ls; pwd'
+    ssh -o StrictHostKeyChecking=no $node 'ls; pwd'
 
     STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
 
@@ -126,11 +126,11 @@ do
     echo $STORM_CFG_DIR_NODE
     if [ $i -eq 1 ]; then
         echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
+	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
 #	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
+	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
 	else
 #	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
+	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
     fi
 done
