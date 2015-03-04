@@ -92,6 +92,9 @@ do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Configuring node: $node"
 
+    echo "SSH in to node"
+    ssh $node "sh -c 'ls'"
+
     STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
 
     STORM_LOCAL_DIR="//N/u/skamburu/storm/local-dir/$i"
