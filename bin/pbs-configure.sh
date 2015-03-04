@@ -97,7 +97,7 @@ do
 
     STORM_CFG_DIR_NODE=$STORMCFGDIR/$i
 
-    STORM_LOCAL_DIR="//N/u/skamburu/storm/local-dir/$i"
+    STORM_LOCAL_DIR="/N/u/skamburu/storm/local-dir/$i"
     echo $STORM_LOCAL_DIR
     STORM_LOG_DIR="/N/u/skamburu/storm/logs/$i"
     echo $STORM_LOG_DIR
@@ -121,15 +121,16 @@ do
 
     cmd="rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR"
     echo $cmd
-    ssh $node $cmd
     rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR
+    echo $STORM_HOME
+    echo $STORM_CFG_DIR_NODE
     if [ $i -eq 1 ]; then
         echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
-	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
+	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
+#	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'""
+	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
 	else
-	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
+#	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'""
+	    ssh skamburu@$node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
     fi
 done
