@@ -37,7 +37,7 @@ $STORMHPC_HOME/bin/pbs-configure.sh -n 3 -c $STORM_CONF_DIR
 sleep 10
 
 #### Submit your jobs here
-$STORM_HOME/bin/storm jar ~/projects/iotrobots/slam/streaming/target/iotrobots-slam-streaming-1.0-SNAPSHOT-jar-with-dependencies.jar cgl.iotrobots.slam.streaming.SLAMTopology -name slam_processor -ds_mode 0 -p 10 -pt 20 > /dev/null 2>&1 &
+$STORM_HOME/bin/storm jar ~/projects/iotrobots/slam/streaming/target/iotrobots-slam-streaming-1.0-SNAPSHOT-jar-with-dependencies.jar cgl.iotrobots.slam.streaming.SLAMTopology -name slam_processor -ds_mode 0 -p 20 -pt 60 -i > /dev/null 2>&1 &
 
 
 while true;
