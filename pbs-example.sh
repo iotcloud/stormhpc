@@ -3,7 +3,7 @@
 #PBS -q batch
 #PBS -N storm_job
 ###PBS -l nodes=2:ppn=4
-#PBS -l select=3:ncpus=12
+#PBS -l select=4:ncpus=12
 #PBS -o s.out
 #PBS -e s.err
 #PBS -A baru-tro
@@ -32,7 +32,7 @@ echo "Set up the configurations for stormhpc"
 
 #export PBS_NODEFILE="/home/supun/dev/projects/stormforhpc/pbsnodes"
 
-$STORMHPC_HOME/bin/pbs-configure.sh -n 3 -c $STORM_CONF_DIR
+$STORMHPC_HOME/bin/pbs-configure.sh -n 4 -c $STORM_CONF_DIR
 
 sleep 10
 
