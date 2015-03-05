@@ -89,6 +89,20 @@ echo "Master is: $MASTER_NODE"
 
 for ((i=1; i<=$NODES; i++))
 do
+    STORM_LOCAL_DIR="/N/u/skamburu/storm/local-dir/$i"
+    STORM_LOG_DIR="/N/u/skamburu/storm/logs/$i"
+
+    cmd="rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR"
+    echo $cmd
+    rm -rf $STORM_LOG_DIR; mkdir -p $STORM_LOG_DIR
+
+    cmd="rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR"
+    echo $cmd
+    rm -rf $STORM_LOCAL_DIR; mkdir -p $STORM_LOCAL_DIR
+done
+
+for ((i=1; i<=$NODES; i++))
+do
     node=`awk 'NR=='"$i"'{print;exit}' $PBS_NODEFILE`
     echo "Configuring node: $node"
 
