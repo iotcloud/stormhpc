@@ -27,10 +27,6 @@ supervisor.slots.ports:
     - 6701
     - 6702
     - 6703
-    - 6704
-    - 6705
-    - 6706
-    - 6707
 
 storm.local.dir: "STORM_LOCAL_DIR"
 storm.log.dir: "STORM_LOG_DIR"
