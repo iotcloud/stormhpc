@@ -142,7 +142,7 @@ do
         echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'""
 	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm nimbus --config storm.yaml > /dev/null 2>&1 &'"
 #	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'""
-	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
+#	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm ui --config storm.yaml > /dev/null 2>&1 &'"
 	else
 #	    echo "ssh $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'""
 	    ssh -o StrictHostKeyChecking=no $node "sh -c 'export STORM_CONF_DIR=$STORM_CFG_DIR_NODE; nohup $STORM_HOME/bin/storm supervisor --config storm.yaml > /dev/null 2>&1 &'"
